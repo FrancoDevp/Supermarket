@@ -6,19 +6,18 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  basePath: '/Supermarket',
-  trailingSlash: true,
-  assetPrefix: '/Supermarket/',
+  output: 'export',                   // Habilita exportación estática
+  trailingSlash: true,                // Necesario para rutas en Netlify
+  images: {
+    unoptimized: true,                // Requerido para export estático
+  },
+  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://supermarketfran.netlify.app' : '', // Fix para recursos estáticos
 
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
   },
   experimental: {
     webpackBuildWorker: true,
@@ -28,7 +27,7 @@ const nextConfig = {
 
   reactStrictMode: true,
   compress: true,
-  productionBrowserSourceMaps: false,
+  productionBrowserSourceMaps: false
 };
 
 if (userConfig) {
