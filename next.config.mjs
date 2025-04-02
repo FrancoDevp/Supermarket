@@ -2,16 +2,21 @@ let userConfig = undefined;
 try {
   userConfig = await import('./v0-user-next.config');
 } catch (e) {
+  // ignore error
 }
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',                   // Habilita exportación estática
-  trailingSlash: true,                // Necesario para rutas en Netlify
+  output: 'export',
+  trailingSlash: true,
+
+  assetPrefix: './', // Usa rutas relativas para compatibilidad total
+
   images: {
-    unoptimized: true,                // Requerido para export estático
+    unoptimized: true,
+    loader: 'custom',
+    loaderFile: './image-loader.js', // Opcional para mayor control
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://supermarketfran.netlify.app' : '', // Fix para recursos estáticos
 
   eslint: {
     ignoreDuringBuilds: true,
@@ -25,9 +30,11 @@ const nextConfig = {
     parallelServerCompiles: true,
   },
 
-  reactStrictMode: true,
+  reactStrictMode: false, // Desactivado para evitar doble renderizado en dev
   compress: true,
-  productionBrowserSourceMaps: false
+  productionBrowserSourceMaps: false,
+
+  generateBuildId: async () => 'build-' + Date.now(), // Evita cacheo no deseado
 };
 
 if (userConfig) {
