@@ -5,37 +5,36 @@ try {
   // ignore error
 }
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
 
-  assetPrefix: './', // Usa rutas relativas para compatibilidad total
-
+  // Configuración esencial simplificada
   images: {
-    unoptimized: true,
-    loader: 'custom',
-    loaderFile: './image-loader.js', // Opcional para mayor control
+    unoptimized: true,  // Elimina el loader custom para Netlify
   },
 
+  // Configuración de desarrollo
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    webpackBuildWorker: true,
-    parallelServerBuildTraces: true,
-    parallelServerCompiles: true,
-  },
 
-  reactStrictMode: false, // Desactivado para evitar doble renderizado en dev
+  // Elimina configuraciones experimentales problemáticas
+  // experimental: {},  // Comenta o elimina esta sección
+
+  // Optimizaciones
+  reactStrictMode: false,
   compress: true,
   productionBrowserSourceMaps: false,
 
-  generateBuildId: async () => 'build-' + Date.now(), // Evita cacheo no deseado
+  // Generación de build
+  generateBuildId: async () => 'build-' + Date.now(),
 };
+
+
 
 if (userConfig) {
   const config = userConfig.default || userConfig;
