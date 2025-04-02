@@ -1,0 +1,46 @@
+{{#if includeExpressServer}}
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+// Crear estructura de directorios
+console.log('Configurando estructura de proyecto con servidor Express...');
+
+// Crear directorio para el cliente
+if (!fs.existsSync('client')) {
+  fs.mkdirSync('client');
+}
+
+// Crear directorio para el servidor
+if (!fs.existsSync('server')) {
+  fs.mkdirSync('server');
+}
+
+// Copiar archivos del servidor
+fs.copyFileSync(
+  path.join(__dirname, 'express-server', 'server.js'),
+  path.join('server', 'server.js')
+);
+
+fs.copyFileSync(
+  path.join(__dirname, 'express-server', 'package.json'),
+  path.join('server', 'package.json')
+);
+
+fs.copyFileSync(
+  path.join(__dirname, 'express-server', 'README.md'),
+  path.join('server', 'README.md')
+);
+
+// Crear directorio de datos para el servidor
+if (!fs.existsSync(path.join('server', 'data'))) {
+  fs.mkdirSync(path.join('server', 'data'));
+  fs.writeFileSync(
+    path.join('server', 'data', 'shopping.json'),
+    JSON.stringify({ items: [] }, null, 2)
+  );
+}
+
+console.log('Estructura de proyecto configurada correctamente.');
+{{/if}}
+
